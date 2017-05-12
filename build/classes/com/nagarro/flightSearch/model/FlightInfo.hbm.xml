@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping.dtd">
+<!-- Generated 17 Aug, 2016 5:28:37 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.nagarro.flightSearch.model.FlightInfo" table="FLIGHTINFO">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="airline" class="com.nagarro.flightSearch.model.Airline" fetch="join">
+            <column name="AIRLINE" />
+        </many-to-one>
+        <property name="flightNo" type="java.lang.String">
+            <column name="FLIGHTNO" />
+        </property>
+        <property name="depLOC" type="java.lang.String">
+            <column name="DEPLOC" />
+        </property>
+        <property name="arrLOC" type="java.lang.String">
+            <column name="ARRLOC" />
+        </property>
+        <property name="validTill" type="java.util.Date">
+            <column name="VALIDTILL" />
+        </property>
+        <property name="flightTime" type="java.lang.String">
+            <column name="FLIGHTTIME" />
+        </property>
+        <property name="flightDuration" type="float">
+            <column name="FLIGHTDURATION" />
+        </property>
+        <property name="fare" type="int">
+            <column name="FARE" />
+        </property>
+        <property name="seatAvailability" type="char">
+            <column name="SEATAVAILABILITY" />
+        </property>
+        <property name="classType" type="java.lang.String">
+            <column name="CLASSTYPE" />
+        </property>
+    </class>
+</hibernate-mapping>

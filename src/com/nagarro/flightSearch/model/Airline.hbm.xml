@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping.dtd">
+<!-- Generated 17 Aug, 2016 5:28:37 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.nagarro.flightSearch.model.Airline" table="AIRLINE">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <set name="flights" table="FLIGHTINFO" inverse="true" cascade="delete, save-update">
+            <key>
+                <column name="AIRLINE" />
+            </key>
+            <one-to-many class="com.nagarro.flightSearch.model.FlightInfo" />
+        </set>
+        <property name="airlineName" type="java.lang.String">
+            <column name="AIRLINENAME" unique="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

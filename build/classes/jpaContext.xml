@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<mvc:annotation-driven />
+	<context:annotation-config />
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<context:component-scan base-package="com.nagarro.flightSearch.controller" />
+	<context:component-scan base-package="com.nagarro.flightSearch.dao" />
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/airlinedb" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+
+	<bean id="mysessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mappingResources">
+			<list>
+				<value>com/nagarro/flightSearch/model/User.hbm.xml</value>
+				<value>com/nagarro/flightSearch/model/Airline.hbm.xml</value>
+				<value>com/nagarro/flightSearch/model/FlightInfo.hbm.xml</value>
+			</list>
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="mysessionFactory" />
+	</bean>
+
+	<bean id="template" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<property name="sessionFactory" ref="mysessionFactory"></property>
+	</bean>
+	
+	<bean id="userDaoImpl" class="com.nagarro.flightSearch.dao.UserDaoImpl">
+		<property name="template" ref="template"></property>
+	</bean>
+	
+	<bean id="loginController" class="com.nagarro.flightSearch.controller.LoginController"
+		scope="singleton">
+		<property name="userDao" ref="userDaoImpl"></property>
+	</bean>
+
+</beans>
